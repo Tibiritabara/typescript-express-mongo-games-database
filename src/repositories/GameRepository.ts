@@ -67,3 +67,5 @@ class GameRepository implements IGameRepository {
         return result !== null;
     }
 }
+
+export default new GameRepository();

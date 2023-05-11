@@ -3,7 +3,7 @@ dotenv.config();
 
 import { Server } from 'net';
 import { createServer } from './server';
-import Logger from './services/logger/logger';
+import Logger from './services/logger';
 import AppConfig from './config/appConfig';
 
 const PORT = AppConfig.app.port;

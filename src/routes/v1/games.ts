@@ -1,10 +1,13 @@
 import { Router } from 'express';
+import GameController from '../../controllers/GameController';
 
 const gamesRouter: Router = Router();
 
 gamesRouter
     .route('/')
-    .post()
+    .post(
+        GameController.create
+    )
     .get();
 
 gamesRouter

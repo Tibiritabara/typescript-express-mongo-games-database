@@ -1,5 +1,5 @@
 import * as winston from 'winston';
-import AppConfig from '../../config/appConfig';
+import AppConfig from '../config/appConfig';
 
 const level = () => {
     return AppConfig.app.isDevelopment ? 'debug' : 'warn';

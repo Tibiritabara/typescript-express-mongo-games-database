@@ -15,8 +15,6 @@ const AppConfig = {
         usernameLocal: process.env.DB_USERNAME,
         passwordLocal: process.env.DB_PASSWORD,
         port: parseInt(<string>process.env.DB_PORT, 10) || 27017,
-        dialect: process.env.DB_DIALECT || 'mongodb',
-        timezone: process.env.DB_TIMEZONE || 'Europe/Berlin',
     }
 };
 
