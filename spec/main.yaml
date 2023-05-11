@@ -1,0 +1,635 @@
+# This is the OpenAPI specification to be used by the API.
+# it will manage the creation, update, read, and deletion of Game resources.
+openapi: 3.0.1
+info:
+  title: Game trending API
+  version: 0.0.1
+  description: |-
+    This is a sample server for a game trending API.
+  contact:
+    name: Ricardo Santos
+    url: https://www.linkedin.com/in/ricardosantosdiaz/
+    email: ricardo.santos.diaz@gmail.com
+servers:
+  - url: http://localhost:3000
+    description: Local server
+tags:
+  - name: games
+    description: Game manager
+  - name: trends
+    description: Trend manager
+paths:
+  /games:
+    post:
+      summary: Create a new Game
+      description: Create and store a new game entry in the database
+      operationId: createGame
+      tags:
+        - games
+      requestBody:
+        description: Game object that needs to be added to the store
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SingleObjectRequest'
+            examples:
+              gameExample:
+                $ref: '#/components/examples/SingleGameRequest'
+      responses:
+        '201':
+          description: Game created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleObjectResponse'
+              examples:
+                gameExample:
+                  $ref: '#/components/examples/SingleGameResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/BadRequestBodyError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+    get:
+      summary: Get and filter through all games
+      description: Get and filter all games stored in the database
+      operationId: getGames
+      parameters:
+        - $ref: '#/components/parameters/Filter'
+        - $ref: '#/components/parameters/PageSize'
+        - $ref: '#/components/parameters/PageNumber'
+        - $ref: '#/components/parameters/Sort'
+      tags:
+        - games
+      responses:
+        '200':
+          description: Games retrieved
+          content:
+            application/vnd.api+json:
+              schema:
+                  $ref: '#/components/schemas/MultipleObjectsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/BadRequestParametersError'
+        '404':
+          description: Games not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notFoundError:
+                  $ref: '#/components/examples/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+  /games/{gameId}:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    put:
+      summary: Update an existing game
+      description: Update an existing game entry in the database
+      operationId: updateGame
+      tags:
+        - games
+      requestBody:
+        description: Game object that needs to be updated in the store
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SingleObjectRequest'
+            examples:
+              gameExample:
+                $ref: '#/components/examples/SingleGameRequest'
+      responses:
+        '200':
+          description: Game updated
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleObjectResponse'
+              examples:
+                gameExample:
+                  $ref: '#/components/examples/SingleGameResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/BadRequestBodyError'
+        '404':
+          description: Games not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notFoundError:
+                  $ref: '#/components/examples/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+    delete:
+      summary: Delete an existing game
+      description: Delete an existing game entry in the database
+      operationId: deleteGame
+      tags:
+        - games
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/BadRequestParametersError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+    patch:
+      summary: Partial update of game entry
+      description: Execute a partial update of a given entry, harnessing the JSON Patch specification, or RFC 6902
+      operationId: patchGame
+      tags:
+        - games
+      requestBody:
+        description: Game object that needs to be partially updated in the store
+        required: true
+        content:
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/JsonPatch'
+            examples:
+              patchRequest:
+                $ref: '#/components/examples/PatchRequest'
+      responses:
+        '200':
+          description: Game created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleObjectResponse'
+              examples:
+                gameExample:
+                  $ref: '#/components/examples/SingleGameResponse'
+        '404':
+          description: Games not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notFoundError:
+                  $ref: '#/components/examples/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+
+                  
+  /trends/{period}:
+    put:
+      summary: Calculate ranking
+      description: Calculate the ranking for a given period
+      operationId: getTrends
+      tags:
+        - trends
+      parameters:
+        - $ref: '#/components/parameters/TrendingPeriod'
+      responses:
+        '201':
+          description: Game created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleObjectResponse'
+              examples:
+                gameExample:
+                  $ref: '#/components/examples/TrendResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/TrendParametersError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
+    
+      
+components:
+  schemas:
+    Game:
+      description: Game object to be stored and managed by the service
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: Game title
+        numberOfLikes:
+          type: integer
+          description: Number of likes for the game
+        numberOfPlayers:
+          type: integer
+          description: Number of players for the game
+        rank:
+          type: integer
+          description: Rank of the game
+        createdAt:
+          type: string
+          format: date-time
+          description: Date and time when the game was created
+        updatedAt:
+          type: string
+          format: date-time
+          description: Date and time when the game was updated
+
+    # Basic JSONAPI Attributes 
+    ObjectType:
+      description: The type of an object
+      type: string
+      enum:
+        - games
+        - trends
+    ObjectId:
+      description: The id of an object
+      type: string
+    ObjectAttributes:
+      description: The attributes of an object
+      type: object
+      properties:
+        attributes:
+          oneOf:
+            - $ref: '#/components/schemas/Game'
+
+    Links:
+      description: Links to navigate paginated results
+      type: object
+      properties:
+        first:
+          type: string
+          format: url
+          description: The first page of the results
+        prev:
+          type: string
+          format: url
+          description: The previous page of the results
+        next:
+          type: string
+          format: url
+          description: The next page of the results
+        last:
+          type: string
+          format: url
+          description: The last page of the results
+
+    Meta:
+      description: Metadata about the results
+      type: object
+      properties:
+        status:
+          type: string
+          description: additional status information relevant to the operation
+
+    # Request objects
+    SingleObjectRequest:
+      description: A single object request
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SingleObjectBody'
+    SingleObjectBody:
+      description: A single object body
+      type: object
+      properties:
+        attributes:
+          $ref: '#/components/schemas/ObjectAttributes'
+    
+    ## JSON Patch according to RFC 6902
+    JsonPatchOperation:
+      type: object
+      properties:
+        op:
+          type: string
+          enum:
+            - "add"
+            - "remove"
+            - "replace"
+            - "move"
+            - "copy"
+            - "test"
+        value:
+          description: The value to be changed/modified by the operation
+        from:
+          type: string
+          description: JSON Pointer, indicating the object attribute to be sourced for modification
+        path:
+          type: string
+          description: JSON pointer towards the target update location
+      required:
+        - "op"
+        - "path"
+    JsonPatch:
+      type: array
+      items:
+        $ref: '#/components/schemas/JsonPatchOperation'
+      description: RFC6902 [JSON Patch](https://datatracker.ietf.org/doc/html/rfc6902)
+          
+    # Response objects
+    SingleObjectResponse:
+      description: A single object response
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/SingleObjectData'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    SingleObjectData:
+      description: The data of a single object
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ObjectType'
+        id:
+          $ref: '#/components/schemas/ObjectId'
+        attributes:
+          $ref: '#/components/schemas/ObjectAttributes'
+    MultipleObjectsResponse:
+      description: A multiple objects response
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SingleObjectData'
+        links:
+          $ref: '#/components/schemas/Links'	
+      required:
+        - data
+    
+    # Errors
+    ErrorPointer:
+      description: A pointer to a given error
+      type: object
+      properties:
+        pointer:
+          type: string
+          description: A JSON pointer following RFC6901 to the value on the request document that caused the error
+    ErrorParameter:
+      description: A parameter that caused the error
+      type: object
+      properties:
+        parameter:
+          type: string
+          description: The name of the URI parameter that caused the error
+    ErrorDetails:
+      description: Details and pointers to causes for a given error
+      type: object
+      properties:
+        title:
+          type: string
+          description: The title of the error
+        detail:
+          type: string
+          description: The details of the error
+        source:
+          oneOf:
+            - $ref: '#/components/schemas/ErrorPointer'
+            - $ref: '#/components/schemas/ErrorParameter'
+      required:
+        - title
+    ErrorResponse:
+      description: An error response
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: The error code
+          minimum: 100
+          maximum: 600
+          example: 400
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+  parameters:
+    GameId:
+      name: gameId
+      in: path
+      description: ID of the game to be retrieved
+      required: true
+      schema:
+        $ref: '#/components/schemas/ObjectId'
+    
+    # Pagination parameters
+    PageNumber:
+      name: page[number]
+      in: query
+      description: Page number to showcase the results
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+    Sort:
+      name: sort
+      in: query
+      description: Sort the results by game object attribute
+      required: false
+      schema:
+        type: string
+        default: ''
+    PageSize:
+      name: page[size]
+      in: query
+      description: Number of results per page
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 50
+    Filter:
+      name: filter
+      in: query
+      description: Filter the results by title
+      required: false
+      schema:
+        type: string
+        default: ''
+    
+    # Trends parameters
+    TrendingPeriod:
+      name: period
+      in: path
+      description: Period to get the trends for
+      required: true
+      schema:
+        type: string
+        enum:
+          - day
+          - week
+          - month
+          - year
+  examples:
+    SingleGameRequest:
+      value:
+        attributes:
+          title: 'The Legend of Zelda: Breath of the Wild'
+          numberOfLikes: 0
+          numberOfPlayers: 0
+    SingleGameResponse:
+      value:
+        data:
+          id: '1e7ed975-4def-447c-b8bc-9c1ca759c928'
+          type: games
+          attributes:
+            title: 'The Legend of Zelda: Breath of the Wild'
+            numberOfLikes: 100
+            numberOfPlayers: 1000
+            rank: 1
+            createdAt: "2021-01-01T00:00:00.000Z"
+            updatedAt: "2021-01-01T00:00:00.000Z"
+    Game:
+      value:
+        title: 'The Legend of Zelda: Breath of the Wild'
+        numberOfLikes: 100
+        numberOfPlayers: 1000
+        rank: 1
+        createdAt: "2021-01-01T00:00:00.000Z"
+        updatedAt: "2021-01-01T00:00:00.000Z"
+
+    # Error examples
+    BadRequestBodyError:
+      value:
+        code: 400
+        errors:
+          - title: GAME_TITLE_EMPTY
+            detail: The game title should not be empty
+            source: 
+              pointer: /data/attributes/title
+          - title: GAME_NUMBER_OF_LIKES_INVALID
+            detail: The number of likes should be a positive integer
+            source: 
+              pointer: /data/attributes/numberOfLikes
+    BadRequestParametersError:
+      value:
+        code: 400
+        errors:
+          - title: PAGE_NUMBER_INVALID
+            detail: The page number should be a positive integer
+            source: 
+              parameter: page[number]
+          - title: PAGE_SIZE_INVALID
+            detail: The page size should be a positive integer
+            source: 
+              parameter: page[size]
+    InternalServerError:
+      value:
+        code: 500
+        errors:
+          - title: INTERNAL_SERVER_ERROR
+            detail: Something went wrong
+    NotFoundError:
+      value:
+        code: 404
+        errors:
+          - title: GAME_NOT_FOUND
+            detail: The game was not found
+    TrendParametersError:
+      value:
+        code: 400
+        errors:
+          - title: INVALID_TRENDING_PERIOD
+            detail: "The trending period should be one of: day, week, month, year"
+            source: 
+              parameter: period
+            
+    # Patch request according to RFC 6902
+    PatchRequest:
+      value:
+        - op: "add"
+          path: "/title"
+          value: "The Legend Of Zelda: Tears Of The Kingdom"
+        - op: "remove"
+          path: "age"
+        - op: "copy"
+          path: "/title"
+          from: "/gameTitle"
+        - op: "move"
+          path: "/numberOfLikes"
+          from: "/peopleWhoLiked"
+        - op: "replace"
+          path: "/title"
+          value: "The Legend Of Zelda: Ocarina Of Time"
+    
+    # Trend response
+    TrendResponse:
+      value:
+        meta: "Trend calculated for the period: day"
+          
