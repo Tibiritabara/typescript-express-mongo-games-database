@@ -11,7 +11,7 @@ info:
     url: https://www.linkedin.com/in/ricardosantosdiaz/
     email: ricardo.santos.diaz@gmail.com
 servers:
-  - url: http://localhost:3000
+  - url: /v1
     description: Local server
 tags:
   - name: games
@@ -112,6 +112,49 @@ paths:
   /games/{gameId}:
     parameters:
       - $ref: '#/components/parameters/GameId'
+    get:
+      summary: Get a single game by Id
+      description: Get a single game entry by its unique identifier
+      operationId: getGameById
+      tags:
+        - games
+      responses:
+        '200':
+          description: Game retrieved
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleObjectResponse'
+              examples:
+                gameExample:
+                  $ref: '#/components/examples/SingleGameResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/BadRequestParametersError'
+        '404':
+          description: Games not found
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notFoundError:
+                  $ref: '#/components/examples/NotFoundError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
     put:
       summary: Update an existing game
       description: Update an existing game entry in the database

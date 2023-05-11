@@ -19,6 +19,11 @@ export interface paths {
   };
   "/games/{gameId}": {
     /**
+     * Get a single game by Id 
+     * @description Get a single game entry by its unique identifier
+     */
+    get: operations["getGameById"];
+    /**
      * Update an existing game 
      * @description Update an existing game entry in the database
      */
@@ -261,6 +266,43 @@ export interface operations {
       };
       /** @description Bad request */
       400: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Get a single game by Id 
+   * @description Get a single game entry by its unique identifier
+   */
+  getGameById: {
+    parameters: {
+      path: {
+        gameId: components["parameters"]["GameId"];
+      };
+    };
+    responses: {
+      /** @description Game retrieved */
+      200: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["SingleObjectResponse"];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Games not found */
+      404: {
         content: {
           "application/vnd.api+json": components["schemas"]["ErrorResponse"];
         };
