@@ -1,10 +1,9 @@
-import { randomUUID } from 'crypto';
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { components } from '../schemas/schema';
 
 type IGame = components['schemas']['Game'];
 
-const gameSchema = new Schema<components['schemas']['Game']>({
+const gameSchema = new Schema<IGame>({
         title: {
             type: String,
             required: true,

@@ -1,9 +1,9 @@
 import GameRepository from '../repositories/GameRepository';
-import { GameInput, GameOutput } from '../dtos/Game';
+import { GameInput, GameOutput, GameId } from '../dtos/Game';
 import { Filter, PageNumber, PageSize, Sort } from '../dtos/Search';
 
 interface IGameService {
-    create(payload: GameInput): Promise<GameOutput>;
+    create(payload: GameInput): Promise<[GameId, GameOutput]>;
     findById(id: string): Promise<GameOutput>;
     search(
         filter: Filter[], 
@@ -16,9 +16,9 @@ interface IGameService {
 }
 
 class GameService implements IGameService {
-    async create(payload: GameInput): Promise<GameOutput> {
-        const game = await GameRepository.create(payload);
-        return game;
+    async create(payload: GameInput): Promise<[GameId, GameOutput]> {
+        const [gameId, game] = await GameRepository.create(payload);
+        return [gameId, game];
     }
 
     async findById(id: string): Promise<GameOutput> {

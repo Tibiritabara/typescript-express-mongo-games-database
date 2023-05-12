@@ -9,7 +9,7 @@ const Logger = winston.createLogger({
     levels: winston.config.syslog.levels,
     format: winston.format.combine(
         winston.format.timestamp(),
-        winston.format.colorize(),
+        // winston.format.colorize(),
         winston.format.json(),
     ),
     transports: [

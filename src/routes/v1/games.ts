@@ -12,8 +12,9 @@ gamesRouter
 
 gamesRouter
     .route('/:id')
-    .get()
-    .put()
+    .get(
+        GameController.findById
+    ).put()
     .patch()
     .delete();
 

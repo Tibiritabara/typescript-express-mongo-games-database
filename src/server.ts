@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import * as swaggerUi from "swagger-ui-express";
 import routesV1 from "./routes/v1";
 import * as fs from "fs";
-import * as YAML from "yaml";
+import YAML from "yaml";
 import { Application } from "express";
 import compression from "compression";
 import AppConfig from "./config/appConfig";

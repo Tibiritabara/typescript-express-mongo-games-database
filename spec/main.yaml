@@ -468,7 +468,7 @@ components:
           items:
             $ref: '#/components/schemas/SingleObjectData'
         links:
-          $ref: '#/components/schemas/Links'	
+          $ref: '#/components/schemas/Links'
       required:
         - data
     

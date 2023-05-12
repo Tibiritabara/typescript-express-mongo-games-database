@@ -6,7 +6,7 @@ const defaultPageSize = 10;
 const defaultPageNumber = 1;
 
 interface IGameRepository {
-    create(payload: GameInput): Promise<GameOutput>;
+    create(payload: GameInput): Promise<[GameId,GameOutput]> ;
     findById(id: GameId): Promise<GameOutput>;
     search(
         filter: Filter[], 
@@ -20,9 +20,9 @@ interface IGameRepository {
 
 class GameRepository implements IGameRepository {
     // Implement the methods here
-    async create(payload: GameInput): Promise<GameOutput> {
+    async create(payload: GameInput): Promise<[GameId,GameOutput]> {
         const game = await Game.create(payload);
-        return game;
+        return [game.id, game];
     }
     
     // implement the getGameById method
