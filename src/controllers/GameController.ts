@@ -15,11 +15,10 @@ const defaultPageSize = 10;
 const defaultPageNumber = 1;
 
 class GameController {
-    async create(req: Request, res: Response, next: NextFunction) {
+    async create(req: Request, res: Response) {
         const requestBody: JsonApiTypes.SingleObjectBody = req.body;
         const gameInput: GameInput = requestBody.attributes as GameInput;
         const [gameId, game] = await GameService.create(gameInput);
-        // const gameOutput: GameOutput = game as GameOutput;
         const objectData: JsonApiTypes.SingleObjectData = {
             type: objectTypes as JsonApiTypes.ObjectType,
             id: gameId,
@@ -29,11 +28,10 @@ class GameController {
         const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
             data: objectData,
         }
-        // const gameOutput: GameOutput = await GameService.create(gameInput);
         res.status(201).json(SingleObjectResponse);
     }
 
-    async findById(req: Request, res: Response, next: NextFunction) {
+    async findById(req: Request, res: Response) {
         const id = req.params.id as GameId;
         const [gameId, game] = await GameService.findById(id);
 
@@ -48,11 +46,12 @@ class GameController {
         res.status(200).json(SingleObjectResponse);
     }
 
-    async search(req: Request, res: Response, next: NextFunction) {
+    async search(req: Request, res: Response) {
         const filter = req.query.filter as unknown as SearchTypes.Filter[];
         const pageObj = req.query.page ;
         let pageNumber = undefined;
         let pageSize = undefined;
+
         // Extract the page number and page size from the ParsedQs object
         if (pageObj) {
             const pagination = pageObj as unknown as IPagination;
@@ -101,7 +100,7 @@ class GameController {
         res.status(200).json(multipleObjectResponse);
     }
 
-    async patch(req: Request, res: Response, next: NextFunction) {
+    async patch(req: Request, res: Response) {
         const id = req.params.id as GameId;
         const operations = req.body as JsonApiTypes.JsonPatch;	
         const [gameId, game] = await GameService.patch(id, operations);
@@ -116,7 +115,7 @@ class GameController {
         res.status(200).json(SingleObjectResponse);
     }
 
-    async update(req: Request, res: Response, next: NextFunction) {
+    async update(req: Request, res: Response) {
         const id = req.params.id as GameId;
         const requestBody: JsonApiTypes.SingleObjectBody = req.body;
         const gameInput: GameInput = requestBody.attributes as GameInput;
@@ -132,7 +131,7 @@ class GameController {
         res.status(200).json(SingleObjectResponse);
     }
 
-    async delete(req: Request, res: Response, next: NextFunction) {
+    async delete(req: Request, res: Response) {
         const id = req.params.id as GameId;
         await GameService.delete(id);
         res.status(204).json();
