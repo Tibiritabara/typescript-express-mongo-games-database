@@ -1,4 +1,3 @@
-import { Game } from '../models/Game';
 import { components } from '../schemas/schema';
 
 export type GameId = components['parameters']['GameId'];

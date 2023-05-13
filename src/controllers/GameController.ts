@@ -4,18 +4,17 @@ import * as JsonApiTypes from "../dtos/JsonApi";
 import * as SearchTypes from "../dtos/Search";
 import GameService from "../services/GameService";
 
-const objectTypes = 'games'
-
 interface IPagination {
     number: string;
     size: string;
 }
 
+const objectTypes = 'games'
 const defaultPageSize = 10;
 const defaultPageNumber = 1;
 
 class GameController {
-    async create(req: Request, res: Response) {
+    async create(req: Request, res: Response, next: NextFunction) {
         const requestBody: JsonApiTypes.SingleObjectBody = req.body;
         const gameInput: GameInput = requestBody.attributes as GameInput;
         const [gameId, game] = await GameService.create(gameInput);
@@ -31,7 +30,7 @@ class GameController {
         res.status(201).json(SingleObjectResponse);
     }
 
-    async findById(req: Request, res: Response) {
+    async findById(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
         const [gameId, game] = await GameService.findById(id);
 
@@ -46,7 +45,7 @@ class GameController {
         res.status(200).json(SingleObjectResponse);
     }
 
-    async search(req: Request, res: Response) {
+    async search(req: Request, res: Response, next: NextFunction) {
         const filter = req.query.filter as unknown as SearchTypes.Filter[];
         const pageObj = req.query.page ;
         let pageNumber = undefined;
@@ -100,7 +99,7 @@ class GameController {
         res.status(200).json(multipleObjectResponse);
     }
 
-    async patch(req: Request, res: Response) {
+    async patch(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
         const operations = req.body as JsonApiTypes.JsonPatch;	
         const [gameId, game] = await GameService.patch(id, operations);
@@ -115,7 +114,7 @@ class GameController {
         res.status(200).json(SingleObjectResponse);
     }
 
-    async update(req: Request, res: Response) {
+    async update(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
         const requestBody: JsonApiTypes.SingleObjectBody = req.body;
         const gameInput: GameInput = requestBody.attributes as GameInput;
@@ -131,7 +130,7 @@ class GameController {
         res.status(200).json(SingleObjectResponse);
     }
 
-    async delete(req: Request, res: Response) {
+    async delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
         await GameService.delete(id);
         res.status(204).json();
