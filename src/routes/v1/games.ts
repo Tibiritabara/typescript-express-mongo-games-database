@@ -19,7 +19,9 @@ gamesRouter
     ).put(
         GameController.update
     )
-    .patch()
+    .patch(
+        GameController.patch
+    )
     .delete(
         GameController.delete
     );

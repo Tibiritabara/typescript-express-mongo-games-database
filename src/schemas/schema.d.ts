@@ -91,6 +91,11 @@ export interface components {
     Links: {
       /**
        * Format: url 
+       * @description The current page of the results
+       */
+      current?: string;
+      /**
+       * Format: url 
        * @description The first page of the results
        */
       first?: string;
@@ -114,6 +119,8 @@ export interface components {
     Meta: {
       /** @description additional status information relevant to the operation */
       status?: string;
+      /** @description The number of results */
+      count?: number;
     };
     /** @description A single object request */
     SingleObjectRequest: {
@@ -125,13 +132,15 @@ export interface components {
     };
     JsonPatchOperation: {
       /** @enum {string} */
-      op: "add" | "remove" | "replace" | "move" | "copy" | "test";
+      op: "add" | "remove" | "replace" | "move" | "copy" | "test" | "inc";
       /** @description The value to be changed/modified by the operation */
       value?: unknown;
       /** @description JSON Pointer, indicating the object attribute to be sourced for modification */
       from?: string;
       /** @description JSON pointer towards the target update location */
       path: string;
+      /** @description The value to be incremented by the operation */
+      inc?: number;
     };
     /** @description RFC6902 [JSON Patch](https://datatracker.ietf.org/doc/html/rfc6902) */
     JsonPatch: (components["schemas"]["JsonPatchOperation"])[];
@@ -150,6 +159,7 @@ export interface components {
     MultipleObjectsResponse: {
       data: (components["schemas"]["SingleObjectData"])[];
       links?: components["schemas"]["Links"];
+      meta?: components["schemas"]["Meta"];
     };
     /** @description A pointer to a given error */
     ErrorPointer: {

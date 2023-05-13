@@ -369,6 +369,10 @@ components:
       description: Links to navigate paginated results
       type: object
       properties:
+        current:
+          type: string
+          format: url
+          description: The current page of the results
         first:
           type: string
           format: url
@@ -393,6 +397,9 @@ components:
         status:
           type: string
           description: additional status information relevant to the operation
+        count:
+          type: number
+          description: The number of results
 
     # Request objects
     SingleObjectRequest:
@@ -422,6 +429,7 @@ components:
             - "move"
             - "copy"
             - "test"
+            - "inc"
         value:
           description: The value to be changed/modified by the operation
         from:
@@ -430,6 +438,9 @@ components:
         path:
           type: string
           description: JSON pointer towards the target update location
+        inc:
+          type: number
+          description: The value to be incremented by the operation
       required:
         - "op"
         - "path"
@@ -468,6 +479,8 @@ components:
             $ref: '#/components/schemas/SingleObjectData'
         links:
           $ref: '#/components/schemas/Links'
+        meta:
+          $ref: '#/components/schemas/Meta'
       required:
         - data
     

@@ -15,7 +15,7 @@ interface IGameRepository {
         pageNumber: PageNumber, 
         pageSize: PageSize, 
         sort: Sort[],
-    ): Promise<[GameId[], IGame[]]>;
+    ): Promise<[number, GameId[], IGame[]]>;
     update(id: GameId, payload: GameInput): Promise<[GameId, IGame]>;
     delete(id: GameId): Promise<boolean>;
 }
@@ -44,14 +44,19 @@ class GameRepository implements IGameRepository {
         pageNumber: PageNumber, 
         pageSize: PageSize, 
         sort: Sort[],
-    ): Promise<[GameId[], IGame[]]> {
+    ): Promise<[number, GameId[], IGame[]]> {
+        const resultsCount = await Game.countDocuments(filter);
         const games = await Game.find(filter)
             .skip((( pageNumber || defaultPageNumber) - 1) * (pageSize || defaultPageSize))
             .limit(pageSize || defaultPageSize)
             .setOptions({ sanitizeFilter: true })
             .exec();
         
-        return [games.map(game => game._id.toString()), games.map(game => game.toObject())];
+        return [
+            resultsCount, 
+            games.map(game => game._id.toString()), 
+            games.map(game => game.toObject()),
+        ];
     }
 
     // implement the updateGame method using mongoose
