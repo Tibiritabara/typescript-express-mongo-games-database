@@ -7,7 +7,8 @@ const AppConfig = {
         ),
         port: parseInt(<string>process.env.APP_PORT, 10) || 3000,
         apiVersion: process.env.API_VERSION || 'v1',
-        secret: process.env.SECRET || 'secret'
+        secret: process.env.SECRET || 'secret',
+        specFile: process.env.SPEC_FILE || 'main.yaml',
     },
     db: {
         host: process.env.DB_HOST,

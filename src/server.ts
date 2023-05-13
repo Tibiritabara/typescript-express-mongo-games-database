@@ -21,7 +21,7 @@ export function createServer(): Application {
   };
 
   // Swagger configuration set up
-  const file = fs.readFileSync("./spec/main.yaml", "utf8");
+  const file = fs.readFileSync(AppConfig.app.specFile, "utf8");
   const swaggerDocument = YAML.parse(file);
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
