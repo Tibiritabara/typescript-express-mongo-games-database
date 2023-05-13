@@ -8,14 +8,20 @@ gamesRouter
     .post(
         GameController.create
     )
-    .get();
+    .get(
+        GameController.search
+    );
 
 gamesRouter
     .route('/:id')
     .get(
         GameController.findById
-    ).put()
+    ).put(
+        GameController.update
+    )
     .patch()
-    .delete();
+    .delete(
+        GameController.delete
+    );
 
 export default gamesRouter;

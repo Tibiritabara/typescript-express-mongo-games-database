@@ -86,9 +86,7 @@ export interface components {
     /** @description The id of an object */
     ObjectId: string;
     /** @description The attributes of an object */
-    ObjectAttributes: {
-      attributes?: components["schemas"]["Game"];
-    };
+    ObjectAttributes: components["schemas"]["Game"];
     /** @description Links to navigate paginated results */
     Links: {
       /**
@@ -123,7 +121,7 @@ export interface components {
     };
     /** @description A single object body */
     SingleObjectBody: {
-      attributes?: components["schemas"]["ObjectAttributes"];
+      attributes?: components["schemas"]["Game"];
     };
     JsonPatchOperation: {
       /** @enum {string} */

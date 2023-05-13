@@ -1,29 +1,31 @@
 import GameRepository from '../repositories/GameRepository';
 import { GameInput, GameOutput, GameId } from '../dtos/Game';
 import { Filter, PageNumber, PageSize, Sort } from '../dtos/Search';
+import Logger from './logger';
+import { stringify } from 'querystring';
 
 interface IGameService {
     create(payload: GameInput): Promise<[GameId, GameOutput]>;
-    findById(id: string): Promise<GameOutput>;
+    findById(id: string): Promise<[GameId, GameOutput]>;
     search(
         filter: Filter[], 
         pageNumber: PageNumber, 
         pageSize: PageSize, 
         sort: Sort[],
     ): Promise<GameInput[]>;
-    update(id: string, payload: Partial<GameInput>): Promise<GameOutput>;
+    update(id: string, payload: Partial<GameInput>): Promise<[GameId, GameOutput]>;
     delete(id: string): Promise<boolean>;
 }
 
 class GameService implements IGameService {
     async create(payload: GameInput): Promise<[GameId, GameOutput]> {
         const [gameId, game] = await GameRepository.create(payload);
-        return [gameId, game];
+        return [gameId as GameId, game as GameOutput];
     }
 
-    async findById(id: string): Promise<GameOutput> {
-        const game = await GameRepository.findById(id);
-        return game;
+    async findById(id: string): Promise<[GameId, GameOutput]> {
+        const [gameId, game] = await GameRepository.findById(id);
+        return [gameId as GameId, game as GameOutput];
     }
 
     async search(
@@ -33,12 +35,12 @@ class GameService implements IGameService {
         sort: Sort[],
     ): Promise<GameInput[]> {
         const games = await GameRepository.search(filter, pageNumber, pageSize, sort);
-        return games;
+        return games as GameOutput[];
     }
 
-    async update(id: string, payload: Partial<GameInput>): Promise<GameOutput> {
-        const game = await GameRepository.update(id, payload);
-        return game;
+    async update(id: string, payload: Partial<GameInput>): Promise<[GameId, GameOutput]> {
+        const [gameId, game]= await GameRepository.update(id, payload);
+        return [gameId as GameId, game as GameOutput];
     }
 
     async delete(id: string): Promise<boolean> {

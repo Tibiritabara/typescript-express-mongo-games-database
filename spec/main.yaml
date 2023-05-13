@@ -362,11 +362,9 @@ components:
     ObjectAttributes:
       description: The attributes of an object
       type: object
-      properties:
-        attributes:
-          oneOf:
-            - $ref: '#/components/schemas/Game'
-
+      oneOf:
+        - $ref: '#/components/schemas/Game'
+          
     Links:
       description: Links to navigate paginated results
       type: object
@@ -408,7 +406,8 @@ components:
       type: object
       properties:
         attributes:
-          $ref: '#/components/schemas/ObjectAttributes'
+          oneOf:
+            - $ref: '#/components/schemas/Game'
     
     ## JSON Patch according to RFC 6902
     JsonPatchOperation:
