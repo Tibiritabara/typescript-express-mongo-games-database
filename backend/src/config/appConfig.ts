@@ -20,7 +20,8 @@ const AppConfig = {
     redis: {
         host: process.env.REDIS_HOST || 'localhost',
         port: parseInt(<string>process.env.REDIS_PORT, 10) || 6379,
-        queue: process.env.REDIS_QUEUE || 'gamestats',
+        trendsQueue: process.env.REDIS_QUEUE || 'gametrends',
+        statsQueue: process.env.REDIS_QUEUE || 'gamestats',
     }
 };
 

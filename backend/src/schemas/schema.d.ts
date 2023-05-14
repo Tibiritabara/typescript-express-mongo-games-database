@@ -51,6 +51,13 @@ export interface paths {
      */
     put: operations["getTrends"];
   };
+  "/stats/{period}": {
+    /**
+     * Accumulate stats for a given time period 
+     * @description Accumulate stats for a given time period
+     */
+    put: operations["getStats"];
+  };
 }
 
 export type webhooks = Record<string, never>;
@@ -206,7 +213,7 @@ export interface components {
     /** @description Filter the results by title */
     Filter?: string;
     /** @description Period to get the trends for */
-    TrendingPeriod: "day" | "week" | "month" | "year";
+    Period: "day" | "week" | "month" | "year";
   };
   requestBodies: never;
   headers: never;
@@ -440,7 +447,38 @@ export interface operations {
   getTrends: {
     parameters: {
       path: {
-        period: components["parameters"]["TrendingPeriod"];
+        period: components["parameters"]["Period"];
+      };
+    };
+    responses: {
+      /** @description Game created */
+      201: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["SingleObjectResponse"];
+        };
+      };
+      /** @description Bad request */
+      400: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["ErrorResponse"];
+        };
+      };
+      /** @description Internal server error */
+      500: {
+        content: {
+          "application/vnd.api+json": components["schemas"]["ErrorResponse"];
+        };
+      };
+    };
+  };
+  /**
+   * Accumulate stats for a given time period 
+   * @description Accumulate stats for a given time period
+   */
+  getStats: {
+    parameters: {
+      path: {
+        period: components["parameters"]["Period"];
       };
     };
     responses: {

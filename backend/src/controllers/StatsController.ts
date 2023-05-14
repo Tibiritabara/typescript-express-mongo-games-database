@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
-import TrendService from "../services/TrendService";
+import StatsService from "../services/StatsService";
 import * as TrendTypes from "../dtos/Trend";
 import * as JsonApiTypes from "../dtos/JsonApi";
 
-class TrendController {
+class StatsController {
     async update(req: Request, res: Response, next: NextFunction) {
         const period = req.params.period as TrendTypes.Period;
-        const result = await TrendService.triggerTrendCalculation(period);
+        const result = await StatsService.triggerStatsAggregation(period);
         const meta: JsonApiTypes.Meta = {
             status: "Job triggered successfully",
         }
@@ -17,4 +17,4 @@ class TrendController {
     }
 }
 
-export default new TrendController();
+export default new StatsController();

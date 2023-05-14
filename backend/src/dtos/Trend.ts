@@ -1,3 +1,3 @@
 import { components } from '../schemas/schema';
 
-export type TrendingPeriod = components['parameters']['TrendingPeriod'];
+export type Period = components['parameters']['Period'];
