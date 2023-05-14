@@ -18,6 +18,8 @@ tags:
     description: Game manager
   - name: trends
     description: Trend manager
+  - name: stats
+    description: Stats manager
 paths:
   /games:
     post:
@@ -289,7 +291,7 @@ paths:
       tags:
         - trends
       parameters:
-        - $ref: '#/components/parameters/TrendingPeriod'
+        - $ref: '#/components/parameters/Period'
       responses:
         '201':
           description: Game created
@@ -318,7 +320,43 @@ paths:
               examples:
                 internalServerError:
                   $ref: '#/components/examples/InternalServerError'
-    
+  /stats/{period}:
+    put:
+      summary: Accumulate stats for a given time period
+      description: Accumulate stats for a given time period
+      operationId: getStats
+      tags:
+        - stats
+      parameters:
+        - $ref: '#/components/parameters/Period'
+      responses:
+        '201':
+          description: Game created
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SingleObjectResponse'
+              examples:
+                gameExample:
+                  $ref: '#/components/examples/StatsResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                badRequestBodyError:
+                  $ref: '#/components/examples/StatsParametersError'
+        '500':
+          description: Internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                internalServerError:
+                  $ref: '#/components/examples/InternalServerError'
       
 components:
   schemas:
@@ -580,7 +618,7 @@ components:
         default: ''
     
     # Trends parameters
-    TrendingPeriod:
+    Period:
       name: period
       in: path
       description: Period to get the trends for
@@ -665,7 +703,15 @@ components:
             detail: "The trending period should be one of: day, week, month, year"
             source: 
               parameter: period
-            
+    StatsParametersError:
+      value:
+        code: 400
+        errors:
+          - title: INVALID_STATS_PERIOPD
+            detail: "The stats accumulation period should be one of: day, week, month, year"
+            source: 
+              parameter: period        
+    
     # Patch request according to RFC 6902
     PatchRequest:
       value:
@@ -688,4 +734,8 @@ components:
     TrendResponse:
       value:
         meta: "Trend calculated for the period: day"
+
+    StatsResponse:
+      value:
+        meta: "Stats accumulated for the period: day"
           
