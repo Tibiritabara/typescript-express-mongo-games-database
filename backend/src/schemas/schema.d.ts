@@ -65,7 +65,10 @@ export interface components {
       numberOfLikes?: number;
       /** @description Number of players for the game */
       numberOfPlayers?: number;
-      /** @description Rank of the game */
+      /**
+       * Format: float 
+       * @description Rank of the game
+       */
       rank?: number;
       /**
        * Format: date-time 

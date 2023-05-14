@@ -26,11 +26,11 @@ const gameSchema = new Schema<IGame>({
         toObject: { 
             transform: function (doc, ret) {
                 delete ret._id;
-                delete ret.__v;
                 return ret;
             }
         },
-        timestamps: true
+        timestamps: true,
+        versionKey: false,
     }
 );
 

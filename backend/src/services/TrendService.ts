@@ -8,8 +8,6 @@ interface ITrendService {
     triggerTrendCalculation(payload: TrendingPeriod): Promise<boolean>;
 }
 
-const defaultQueueMessage: string = 'calculate';
-
 class TrendService implements ITrendService {
     private queueClient: IQueue;
 
@@ -18,7 +16,7 @@ class TrendService implements ITrendService {
     }
 
     async triggerTrendCalculation(payload: TrendingPeriod): Promise<boolean> {
-        await this.queueClient.send(appConfig.redis.queue, payload);
+        await this.queueClient.send(appConfig.redis.queue, JSON.stringify({ period: payload }));
         return true;
     }
 }

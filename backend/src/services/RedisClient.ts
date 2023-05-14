@@ -14,7 +14,7 @@ export class RedisClient implements IQueue {
 
     async send(queue: string, message: string): Promise<void> {
         await this.redisClient.connect();
-        await this.redisClient.set(queue, message);
+        await this.redisClient.publish(queue, message);
         await this.redisClient.disconnect();
     }
 }
