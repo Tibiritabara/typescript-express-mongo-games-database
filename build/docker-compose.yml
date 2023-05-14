@@ -19,10 +19,21 @@ services:
       com.docker.compose.app: "mongo"
       com.docker.compose.env: "dev"
 
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - backend
+    labels:
+      com.docker.compose.app: "redis"
+      com.docker.compose.env: "dev"
+
   api:
     build: 
       context: ../
-      dockerfile: ./build/Dockerfile
+      dockerfile: ./build/Dockerfile.api
     restart: always
     environment:
       APP_NAME: game-trends-api
@@ -37,6 +48,8 @@ services:
       DB_PASSWORD: secret
       DB_PORT: 27017
       SPEC_FILE: main.yaml
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     depends_on:
       - mongo
     ports:
@@ -45,4 +58,58 @@ services:
       - backend
     labels:
       com.docker.compose.app: "game-trends-api"
+      com.docker.compose.env: "dev"
+
+  stats:
+    build:
+      context: ../
+      dockerfile: ./build/Dockerfile.jobs
+    command: python -m main --job stats
+    restart: always
+    environment:
+      TRENDS_QUEUE_NAME: gametrends
+      STATS_QUEUE_NAME: gamestats
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_DATABASE: test
+      DB_USERNAME: mongoadmin
+      DB_PASSWORD: secret
+      DB_AUTH_SOURCE: admin
+      TREND_CALCULATION_STRATEGY: zscore
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - backend
+    labels:
+      com.docker.compose.app: "game-stats-job"
+      com.docker.compose.env: "dev"
+
+  trends:
+    build:
+      context: ../
+      dockerfile: ./build/Dockerfile.jobs
+    command: python -m main --job trends
+    restart: always
+    environment:
+      TRENDS_QUEUE_NAME: gametrends
+      STATS_QUEUE_NAME: gamestats
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      DB_HOST: mongo
+      DB_PORT: 27017
+      DB_DATABASE: test
+      DB_USERNAME: mongoadmin
+      DB_PASSWORD: secret
+      DB_AUTH_SOURCE: admin
+      TREND_CALCULATION_STRATEGY: zscore
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - backend
+    labels:
+      com.docker.compose.app: "game-trends-job"
       com.docker.compose.env: "dev"

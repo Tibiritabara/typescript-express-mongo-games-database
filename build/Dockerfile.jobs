@@ -1,0 +1,15 @@
+FROM python:3.10-slim-buster
+
+WORKDIR /app
+
+RUN python -m pip install pipenv
+
+COPY ./trending/Pipfile ./trending/Pipfile.lock ./
+
+RUN pipenv install --system --deploy
+
+COPY ./trending/src ./
+
+ENV PYTHONPATH=$PYTHONPATH:/app
+
+CMD ["python", "-m", "main.py"]

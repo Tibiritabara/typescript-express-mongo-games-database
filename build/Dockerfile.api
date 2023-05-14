@@ -5,11 +5,11 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-COPY tsconfig.json package*.json ./
+COPY ./backend/tsconfig.json ./backend/package*.json ./
 
 RUN yarn install
 
-COPY ./src ./src
+COPY ./backend/src ./src
 
 RUN ["yarn", "build"]
 
@@ -19,7 +19,7 @@ FROM node:20-alpine AS server
 
 WORKDIR /app
 
-COPY package* ./
+COPY ./backend/package*.json ./
 
 RUN npm install --production
 

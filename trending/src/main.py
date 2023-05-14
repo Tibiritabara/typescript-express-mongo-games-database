@@ -30,12 +30,12 @@ def main():
 
     logger.info("Connecting to mongo")
     connect(
-        db=os.getenv("MONGO_DB", 'test'),
-        host=os.getenv("MONGO_HOST", 'localhost'),
-        port=int(os.getenv("MONGO_PORT", '27017')),
-        username=os.getenv("MONGO_USER"),
-        password=os.getenv("MONGO_PASSWORD"),
-        authentication_source=os.getenv("MONGO_AUTH_DB", 'admin'),
+        db=os.getenv("DB_DATABASE", 'test'),
+        host=os.getenv("DB_HOST", 'localhost'),
+        port=int(os.getenv("DB_PORT", '27017')),
+        username=os.getenv("DB_USERNAME"),
+        password=os.getenv("DB_PASSWORD"),
+        authentication_source=os.getenv("DB_AUTH_SOURCE", 'admin'),
     )
 
     options = {}
