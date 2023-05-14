@@ -11,14 +11,18 @@ class Games(mongoengine.Document):
     updatedAt: Optional[datetime] = mongoengine.DateTimeField()
     
 
-
 class Stats(mongoengine.EmbeddedDocument):
     numberOfLikes: Optional[int] = mongoengine.IntField()
     numberOfPlayers: Optional[int] = mongoengine.IntField()
     createdAt: Optional[datetime] = mongoengine.DateTimeField(default=datetime.now())
 
+
 class GameStats(mongoengine.Document):
     game: Games = mongoengine.ReferenceField(Games)
-    stats = mongoengine.ListField(mongoengine.EmbeddedDocumentField(Stats))
+    stats = mongoengine.SortedListField(
+        mongoengine.EmbeddedDocumentField(Stats),
+        ordering="createdAt",
+        reverse=True
+    )
     createdAt: Optional[datetime] = mongoengine.DateTimeField(default=datetime.now())
     updatedAt: Optional[datetime] = mongoengine.DateTimeField(default=datetime.now())

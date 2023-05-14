@@ -8,6 +8,8 @@ redis = "*"
 python-json-logger = "*"
 datamodel-code-generator = "*"
 mongoengine = "*"
+pandas = "*"
+scikit-learn = "*"
 
 [dev-packages]
 pylint = "*"

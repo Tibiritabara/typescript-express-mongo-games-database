@@ -1,6 +1,6 @@
 import abc
 
-class StrategyInterfafe(abc.ABC):
+class StrategyInterface(abc.ABC):
     @abc.abstractmethod
     def calculate(self, data):
         pass

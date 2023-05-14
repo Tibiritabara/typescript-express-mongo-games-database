@@ -1,15 +1,10 @@
-from trends.interface import CalculateTrendInterface
-from strategy.interface import StrategyInterface
+from trends.common import CalculateTrendInterface
+from strategy.common import StrategyInterface
+from services.logger import logger
 
-class YearlyTrend(CalculateTrendInterface):
-    def __init__(
-            self,
-            strategy: StrategyInterface,
-        ):
-        self.strategy = strategy
-
-    def calculate(self, data):
-        return data.groupby(data.index.date).mean()
+class YearTrendCalculator(CalculateTrendInterface):
+    def execute(self):
+        raise Exception("Not implemented yet for year period")
 
     def preprocess(self, data):
         return data

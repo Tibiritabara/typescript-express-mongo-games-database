@@ -38,13 +38,13 @@ def main():
         authentication_source=os.getenv("MONGO_AUTH_DB", 'admin'),
     )
 
+    options = {}
+
     logger.info("Initializing job")
     job = factory.get_instance(
         args.job,
         redis,
-        {
-            "queue_name": os.getenv("STATS_QUEUE_NAME"),
-        }
+        options,
     )
 
     job.execute()
