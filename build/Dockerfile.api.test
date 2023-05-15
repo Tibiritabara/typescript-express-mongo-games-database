@@ -1,0 +1,18 @@
+
+# Multi stage build
+# build the server
+FROM node:20-alpine AS tester
+
+WORKDIR /app
+
+COPY ./backend/jest.config.js ./backend/tsconfig.json ./backend/package*.json ./backend/yarn.lock ./
+
+RUN yarn install
+
+COPY ./spec/main.yaml ./main.yaml
+
+COPY ./backend/src ./src
+
+COPY ./backend/tests ./tests
+
+CMD ["npx", "jest", "--coverage"]

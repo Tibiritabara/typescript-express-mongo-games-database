@@ -1,0 +1,63 @@
+version: '3.9'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+    networks:
+      - backend
+    labels:
+      com.docker.compose.app: "mongo"
+      com.docker.compose.env: "dev"
+
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - backend
+    labels:
+      com.docker.compose.app: "redis"
+      com.docker.compose.env: "dev"
+
+  api:
+    build: 
+      context: ../
+      dockerfile: ./build/Dockerfile.api.test
+      target: tester
+    restart: always
+    environment:
+      APP_NAME: game-trends-api
+      APP_SERVER: localhost
+      NODE_ENV: dev
+      APP_PORT: 8080
+      apiVersion: v1
+      SECRET: appsecret
+      DB_HOST: mongo
+      DB_DATABASE: games
+      DB_USERNAME: mongoadmin
+      DB_PASSWORD: secret
+      DB_PORT: 27017
+      SPEC_FILE: main.yaml
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      - mongo
+      - redis
+    ports:
+      - 8081:8080
+    networks:
+      - backend
+    labels:
+      com.docker.compose.app: "game-trends-api"
+      com.docker.compose.env: "dev"
