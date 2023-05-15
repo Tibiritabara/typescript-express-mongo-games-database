@@ -16,7 +16,7 @@ The codebase structure is organized according to the functional aspects of each 
 
 The project is fully [OpenAPI 3.0.1](https://www.openapis.org/) compatible, along with the implementation of the [JSON API](https://jsonapi.org/) spec, and the [RFC 6902](https://datatracker.ietf.org/doc/html/rfc6902), following the latest standards and recommendations for the development of a REST API.
 
-It harnesses `MongoDB` for data storage, and `redis` for events. Internally, the project harnesses `yarn` for package management, the API runs on top of `express`, and it's tests were developed on top of `jest`.
+It harnesses `MongoDB` for data storage, and `redis` for events. Internally, the project harnesses `yarn` for package management, the API runs on top of `express`, and it's tests were developed on top of `jest`. The project achieves a **~90%** coverage. 
 
 ## Project execution
 

@@ -5,3 +5,4 @@ run:
 test:
 	docker compose -f ./build/docker-compose.test.yml build
 	docker compose -f ./build/docker-compose.test.yml run api
+	docker compose -f ./build/docker-compose.test.yml rm --stop --force
