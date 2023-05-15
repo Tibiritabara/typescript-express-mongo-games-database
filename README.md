@@ -14,7 +14,7 @@ The REST API is the front facing part of the application and it was written in T
 
 Both Jobs run on top of Python, which opens the door for different types of data manipulation and analysis capabilities. They listen to messages on the Redis queues, do the stats accumulation, and write the final rankings back to the Mongo database.
 
-For more details on each one of these components please go the ![REST API documentation](./backend/README.md) and the ![Jobs documentation](./trending/README.md).
+For more details on each one of these components please go the [REST API documentation](./backend/README.md) and the [Jobs documentation](./trending/README.md).
 
 ### Project Structure
 
@@ -36,7 +36,7 @@ make run-locally
 
 ## How to contribute
 
-Any contributions you make are greatly appreciated. If you have a suggestion that would make this better, please fork the repo and create a pull request. For more details follow the ![Contribution guidelines](./CONTRIBUTING.md).
+Any contributions you make are greatly appreciated. If you have a suggestion that would make this better, please fork the repo and create a pull request. For more details follow the [Contribution guidelines](./CONTRIBUTING.md).
 
 ## Contact
 
