@@ -36,7 +36,9 @@ The project can be easily executed on top of Docker and Docker compose. Please e
 make run
 ```
 
-The app will use the ports `8081` for the API, `27017` for the MongoDB instance, and `6379`for Redis. You will be able to access the api by hitting [http://localhost:8081/docs](http://localhost:8081/docs)
+The app will use the ports `8081` for the API, `27017` for the MongoDB instance, and `6379`for Redis. You will be able to access the api by hitting [http://localhost:8081/docs](http://localhost:8081/docs). 
+
+Please find a set of [insomnia](https://insomnia.rest/) samples on `./docs/insomnia_samples.json` to easily trigger the requests from a REST client.
 
 ### Executing the API test suite
 
