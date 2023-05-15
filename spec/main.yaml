@@ -552,19 +552,19 @@ components:
           oneOf:
             - $ref: '#/components/schemas/ErrorPointer'
             - $ref: '#/components/schemas/ErrorParameter'
-      required:
-        - title
-    ErrorResponse:
-      description: An error response
-      type: object
-      properties:
-        code:
+        status:
           type: integer
           format: int32
           description: The error code
           minimum: 100
           maximum: 600
           example: 400
+      required:
+        - title
+    ErrorResponse:
+      description: An error response
+      type: object
+      properties:
         errors:
           type: array
           items:
@@ -661,56 +661,58 @@ components:
     # Error examples
     BadRequestBodyError:
       value:
-        code: 400
         errors:
           - title: GAME_TITLE_EMPTY
             detail: The game title should not be empty
             source: 
               pointer: /data/attributes/title
+            status: 400
           - title: GAME_NUMBER_OF_LIKES_INVALID
             detail: The number of likes should be a positive integer
             source: 
               pointer: /data/attributes/numberOfLikes
+            status: 400
     BadRequestParametersError:
       value:
-        code: 400
         errors:
           - title: PAGE_NUMBER_INVALID
             detail: The page number should be a positive integer
             source: 
               parameter: page[number]
+            status: 400
           - title: PAGE_SIZE_INVALID
             detail: The page size should be a positive integer
             source: 
               parameter: page[size]
+            status: 400
     InternalServerError:
       value:
-        code: 500
         errors:
           - title: INTERNAL_SERVER_ERROR
             detail: Something went wrong
+            status: 500
     NotFoundError:
       value:
-        code: 404
         errors:
           - title: GAME_NOT_FOUND
             detail: The game was not found
+            status: 404
     TrendParametersError:
       value:
-        code: 400
         errors:
           - title: INVALID_TRENDING_PERIOD
             detail: "The trending period should be one of: day, week, month, year"
             source: 
               parameter: period
+            status: 400
     StatsParametersError:
       value:
-        code: 400
         errors:
           - title: INVALID_STATS_PERIOPD
             detail: "The stats accumulation period should be one of: day, week, month, year"
             source: 
               parameter: period        
+            status: 400
     
     # Patch request according to RFC 6902
     PatchRequest:
