@@ -1,3 +1,6 @@
+import { loggers } from "winston";
+import Logger from "../services/logger";
+
 const AppConfig = {
     app: {
         name: process.env.APP_NAME || 'game-trend-api',

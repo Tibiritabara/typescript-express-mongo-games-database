@@ -10,6 +10,9 @@ import { Application } from "express";
 import compression from "compression";
 import AppConfig from "./config/AppConfig";
 import MongoStore from "connect-mongo";
+import mainRouter from "./routes/v1/main";
+import { AppError, HttpCode } from "./exceptions/AppError";
+import { errorHandler } from "./exceptions/ErrorHandler";
 
 export function createServer(): Application {
   const app = express();
@@ -48,7 +51,18 @@ export function createServer(): Application {
   app.use(express.json());
   app.use(compression());
   app.use(cors(corsOption));
+  app.use('/', mainRouter);
   app.use(`/${AppConfig.app.apiVersion}`, routesV1);
+
+  // Catch 404 and forward to error handler
+  app.use((req, res, next) => {
+    const err = new AppError({
+      title: "NOT_FOUND",
+      detail: "API endpoint not found",
+      status: HttpCode.NOT_FOUND,
+    });
+    errorHandler.handleError(err, res);
+  });
 
   return app;
 }

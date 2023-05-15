@@ -19,8 +19,8 @@ const gamesRequirements = {
             body('attributes.numberOfPlayers').isNumeric().optional({ nullable: true }),
         ],
         search: [
-            param('page[number]').isNumeric().optional({ nullable: true }),
-            param('page[size]').isNumeric().optional({ nullable: true }),
+            param('page.number').isNumeric().optional({ nullable: true }),
+            param('page.size').isNumeric().optional({ nullable: true }),
         ],
         patch: [
             param('id').exists().isMongoId(),

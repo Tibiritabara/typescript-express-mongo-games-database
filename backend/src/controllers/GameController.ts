@@ -3,6 +3,7 @@ import { GameInput, GameId } from "../dtos/Game";
 import * as JsonApiTypes from "../dtos/JsonApi";
 import * as SearchTypes from "../dtos/Search";
 import GameService from "../services/GameService";
+import { HttpCode } from "../exceptions/AppError";
 
 interface IPagination {
     number: string;
@@ -28,7 +29,7 @@ class GameController {
             const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
                 data: objectData,
             }
-            res.status(201).json(SingleObjectResponse);
+            res.status(HttpCode.CREATED).json(SingleObjectResponse);
         } catch (error) {
             next(error);
         }
@@ -46,7 +47,7 @@ class GameController {
             const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
                 data: objectData,
             }
-            res.status(200).json(SingleObjectResponse);
+            res.status(HttpCode.OK).json(SingleObjectResponse);
         } catch (error) {
             next(error);
         }
@@ -105,7 +106,7 @@ class GameController {
                 meta: meta,
             }
 
-            res.status(200).json(multipleObjectResponse);
+            res.status(HttpCode.OK).json(multipleObjectResponse);
         } catch (error) {
             next(error);
         }
@@ -124,7 +125,7 @@ class GameController {
             const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
                 data: objectData,
             }
-            res.status(200).json(SingleObjectResponse);
+            res.status(HttpCode.OK).json(SingleObjectResponse);
         } catch (error) {
             next(error);
         }
@@ -144,7 +145,7 @@ class GameController {
             const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
                 data: objectData,
             }
-            res.status(200).json(SingleObjectResponse);
+            res.status(HttpCode.OK).json(SingleObjectResponse);
         } catch (error) {
             next(error);
         }
@@ -154,7 +155,7 @@ class GameController {
         const id = req.params.id as GameId;
         try {
             await GameService.delete(id);
-            res.status(204).json();
+            res.status(HttpCode.NO_CONTENT).json();
         } catch (error) {
             next(error);
         }
