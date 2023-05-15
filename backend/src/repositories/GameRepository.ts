@@ -50,6 +50,7 @@ class GameRepository implements IGameRepository {
     ): Promise<[number, GameId[], IGame[]]> {
         const resultsCount = await Game.countDocuments(filter);
         const games = await Game.find(filter)
+            .sort({ rank: 1 })
             .skip((( pageNumber || defaultPageNumber) - 1) * (pageSize || defaultPageSize))
             .limit(pageSize || defaultPageSize)
             .setOptions({ sanitizeFilter: true })
