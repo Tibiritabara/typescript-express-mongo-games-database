@@ -17,32 +17,40 @@ class GameController {
     async create(req: Request, res: Response, next: NextFunction) {
         const requestBody: JsonApiTypes.SingleObjectBody = req.body;
         const gameInput: GameInput = requestBody.attributes as GameInput;
-        const [gameId, game] = await GameService.create(gameInput);
-        const objectData: JsonApiTypes.SingleObjectData = {
-            type: objectTypes as JsonApiTypes.ObjectType,
-            id: gameId,
-            attributes: game,
-        };
+        try {
+            const [gameId, game] = await GameService.create(gameInput);
+            const objectData: JsonApiTypes.SingleObjectData = {
+                type: objectTypes as JsonApiTypes.ObjectType,
+                id: gameId,
+                attributes: game,
+            };
 
-        const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
-            data: objectData,
+            const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
+                data: objectData,
+            }
+            res.status(201).json(SingleObjectResponse);
+        } catch (error) {
+            next(error);
         }
-        res.status(201).json(SingleObjectResponse);
     }
 
     async findById(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
-        const [gameId, game] = await GameService.findById(id);
-
-        const objectData: JsonApiTypes.SingleObjectData = {
-            type: objectTypes as JsonApiTypes.ObjectType,
-            id: gameId,
-            attributes: game,
-        };
-        const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
-            data: objectData,
+        try {
+            const [gameId, game] = await GameService.findById(id);
+            const objectData: JsonApiTypes.SingleObjectData = {
+                type: objectTypes as JsonApiTypes.ObjectType,
+                id: gameId,
+                attributes: game,
+            };
+            const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
+                data: objectData,
+            }
+            res.status(200).json(SingleObjectResponse);
+        } catch (error) {
+            next(error);
         }
-        res.status(200).json(SingleObjectResponse);
+
     }
 
     async search(req: Request, res: Response, next: NextFunction) {
@@ -59,81 +67,97 @@ class GameController {
         }
 
         const sort = req.query.sort as SearchTypes.Sort[];
-        const [count, gameIds, games] = await GameService.search(filter, pageNumber, pageSize, sort);
-        
-        let objectArray: JsonApiTypes.SingleObjectData[] = [];
-        for (let i=0; i<games.length; i++) {
-            const objectData: JsonApiTypes.SingleObjectData = {
-                type: objectTypes as JsonApiTypes.ObjectType,
-                id: gameIds[i],
-                attributes: games[i],
+
+        try {
+            const [count, gameIds, games] = await GameService.search(filter, pageNumber, pageSize, sort);
+            let objectArray: JsonApiTypes.SingleObjectData[] = [];
+            for (let i=0; i<games.length; i++) {
+                const objectData: JsonApiTypes.SingleObjectData = {
+                    type: objectTypes as JsonApiTypes.ObjectType,
+                    id: gameIds[i],
+                    attributes: games[i],
+                };
+                objectArray.push(objectData);
+            }
+
+            let filterQueryString = ''
+            if (filter) {
+                filterQueryString = Object.entries(filter).map(([key, value]) => `filter[${key}]=${value}`).join('&');
+            }
+            
+            const nextPage = pageNumber ? (pageNumber + 1) % count + 1 : defaultPageNumber;
+            const lastPage = Math.ceil(count / (pageSize ? pageSize : defaultPageSize));
+
+            const links: JsonApiTypes.Links = {
+                current: `${req.baseUrl}?page[number]=${pageNumber}&page[size]=${pageSize}&${filterQueryString}`,
+                first: `${req.baseUrl}?page[number]=1&page[size]=${pageSize}&${filterQueryString}`,
+                next: `${req.baseUrl}?page[number]=${nextPage}&page[size]=${pageSize}&${filterQueryString}`,
+                last: `${req.baseUrl}?page[number]=${lastPage}&page[size]=${pageSize}&${filterQueryString}`,
             };
-            objectArray.push(objectData);
+
+            const meta: JsonApiTypes.Meta = {
+                count: count,
+            }
+
+            const multipleObjectResponse: JsonApiTypes.MultipleObjectsResponse = {
+                data: objectArray,
+                links: links,
+                meta: meta,
+            }
+
+            res.status(200).json(multipleObjectResponse);
+        } catch (error) {
+            next(error);
         }
-
-        let filterQueryString = ''
-        if (filter) {
-            filterQueryString = Object.entries(filter).map(([key, value]) => `filter[${key}]=${value}`).join('&');
-        }
-        
-        const nextPage = pageNumber ? (pageNumber + 1) % count + 1 : defaultPageNumber;
-        const lastPage = Math.ceil(count / (pageSize ? pageSize : defaultPageSize));
-
-        const links: JsonApiTypes.Links = {
-            current: `${req.baseUrl}?page[number]=${pageNumber}&page[size]=${pageSize}&${filterQueryString}`,
-            first: `${req.baseUrl}?page[number]=1&page[size]=${pageSize}&${filterQueryString}`,
-            next: `${req.baseUrl}?page[number]=${nextPage}&page[size]=${pageSize}&${filterQueryString}`,
-            last: `${req.baseUrl}?page[number]=${lastPage}&page[size]=${pageSize}&${filterQueryString}`,
-        };
-
-        const meta: JsonApiTypes.Meta = {
-            count: count,
-        }
-
-        const multipleObjectResponse: JsonApiTypes.MultipleObjectsResponse = {
-            data: objectArray,
-            links: links,
-            meta: meta,
-        }
-
-        res.status(200).json(multipleObjectResponse);
     }
 
     async patch(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
         const operations = req.body as JsonApiTypes.JsonPatch;	
-        const [gameId, game] = await GameService.patch(id, operations);
-        const objectData: JsonApiTypes.SingleObjectData = {
-            type: objectTypes as JsonApiTypes.ObjectType,
-            id: gameId,
-            attributes: game,
-        };
-        const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
-            data: objectData,
+        try {
+            const [gameId, game] = await GameService.patch(id, operations);
+            const objectData: JsonApiTypes.SingleObjectData = {
+                type: objectTypes as JsonApiTypes.ObjectType,
+                id: gameId,
+                attributes: game,
+            };
+            const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
+                data: objectData,
+            }
+            res.status(200).json(SingleObjectResponse);
+        } catch (error) {
+            next(error);
         }
-        res.status(200).json(SingleObjectResponse);
     }
 
     async update(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
         const requestBody: JsonApiTypes.SingleObjectBody = req.body;
         const gameInput: GameInput = requestBody.attributes as GameInput;
-        const [gameId, game] = await GameService.update(id, gameInput);
-        const objectData: JsonApiTypes.SingleObjectData = {
-            type: objectTypes as JsonApiTypes.ObjectType,
-            id: gameId,
-            attributes: game,
-        };
-        const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
-            data: objectData,
+        try {
+            const [gameId, game] = await GameService.update(id, gameInput);
+            const objectData: JsonApiTypes.SingleObjectData = {
+                type: objectTypes as JsonApiTypes.ObjectType,
+                id: gameId,
+                attributes: game,
+            };
+            const SingleObjectResponse: JsonApiTypes.SingleObjectResponse = {
+                data: objectData,
+            }
+            res.status(200).json(SingleObjectResponse);
+        } catch (error) {
+            next(error);
         }
-        res.status(200).json(SingleObjectResponse);
     }
 
     async delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params.id as GameId;
-        await GameService.delete(id);
-        res.status(204).json();
+        try {
+            await GameService.delete(id);
+            res.status(204).json();
+        } catch (error) {
+            next(error);
+        }
     }
 
 }

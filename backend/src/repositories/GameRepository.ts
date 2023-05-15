@@ -1,8 +1,7 @@
 import { Game, IGame } from '../models/Game';
 import { GameInput, GameId } from '../dtos/Game';
 import { Filter, PageNumber, PageSize, Sort } from '../dtos/Search';
-import Logger from '../services/logger';
-import { stringify } from 'querystring';
+import { AppError, HttpCode } from '../exceptions/AppError';
 
 const defaultPageSize = 10;
 const defaultPageNumber = 1;
@@ -32,7 +31,11 @@ class GameRepository implements IGameRepository {
         const game = await Game.findById(id);
         // Throw an error if the game is not found
         if (!game) {
-            throw new Error('Game not found');
+            throw new AppError({
+                status: HttpCode.NOT_FOUND,
+                title: 'GAME_NOT_FOUND',
+                detail: `Game with id ${id} not found`,
+            });
         }
 
         return [game._id.toString(), game.toObject()];
@@ -64,7 +67,11 @@ class GameRepository implements IGameRepository {
         const game = await Game.findByIdAndUpdate(id, payload, { new: true });
         // Throw an error if the game is not found
         if (!game) {
-            throw new Error('Game not found');
+            throw new AppError({
+                status: HttpCode.NOT_FOUND,
+                title: 'GAME_NOT_FOUND',
+                detail: `Game with id ${id} not found`,
+            });
         }
         return [game._id.toString(), game.toObject()];
     }

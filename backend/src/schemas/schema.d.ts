@@ -188,15 +188,15 @@ export interface components {
       /** @description The details of the error */
       detail?: string;
       source?: components["schemas"]["ErrorPointer"] | components["schemas"]["ErrorParameter"];
-    };
-    /** @description An error response */
-    ErrorResponse: {
       /**
        * Format: int32 
        * @description The error code 
        * @example 400
        */
-      code?: number;
+      status?: number;
+    };
+    /** @description An error response */
+    ErrorResponse: {
       errors?: (components["schemas"]["ErrorDetails"])[];
     };
   };

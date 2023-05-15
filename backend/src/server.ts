@@ -8,7 +8,7 @@ import * as fs from "fs";
 import YAML from "yaml";
 import { Application } from "express";
 import compression from "compression";
-import AppConfig from "./config/appConfig";
+import AppConfig from "./config/AppConfig";
 import MongoStore from "connect-mongo";
 
 export function createServer(): Application {

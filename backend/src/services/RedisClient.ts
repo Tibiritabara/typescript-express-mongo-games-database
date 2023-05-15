@@ -1,4 +1,4 @@
-import appConfig from "../config/appConfig";
+import AppConfig from "../config/AppConfig";
 import { IQueue } from "../schemas/queue";
 import { RedisClientType, createClient } from 'redis';
 
@@ -6,7 +6,7 @@ export class RedisClient implements IQueue {
     private redisClient: RedisClientType;
 
     constructor() {
-        const url = `redis://${appConfig.redis.host}:${appConfig.redis.port}`
+        const url = `redis://${AppConfig.redis.host}:${AppConfig.redis.port}`
         this.redisClient = createClient({
             url: url,
         });

@@ -1,4 +1,4 @@
-import appConfig from "../config/appConfig";
+import AppConfig from "../config/AppConfig";
 import { Period } from "../dtos/Trend";
 import { IQueue } from "../schemas/queue";
 import { RedisClient } from "./RedisClient";
@@ -15,7 +15,7 @@ class StatsService implements IStatsService {
     }
 
     async triggerStatsAggregation(payload: Period): Promise<boolean> {
-        await this.queueClient.send(appConfig.redis.statsQueue, JSON.stringify({ period: payload }));
+        await this.queueClient.send(AppConfig.redis.statsQueue, JSON.stringify({ period: payload }));
         return true;
     }
 }
