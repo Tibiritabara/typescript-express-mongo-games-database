@@ -56,8 +56,8 @@ class GameController {
     async search(req: Request, res: Response, next: NextFunction) {
         const filter = req.query.filter as unknown as SearchTypes.Filter[];
         const pageObj = req.query.page ;
-        let pageNumber = undefined;
-        let pageSize = undefined;
+        let pageNumber: number | undefined = 1;
+        let pageSize: number | undefined = 10;
 
         // Extract the page number and page size from the ParsedQs object
         if (pageObj) {

@@ -28,7 +28,7 @@ class ErrorHandler {
 
     private handleMultipleErrors(errors: AppError[], response?: Response): void {
         if (response) {
-            const errorCode = errors[0].errorDetails.status || 500;
+            const errorCode = errors[0].errorDetails.status || HttpCode.INTERNAL_SERVER_ERROR;
             const errorResponse: JsonApiTypes.ErrorResponse = {
                 errors: errors.map((error) => error.errorDetails),   
             }
